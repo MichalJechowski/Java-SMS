@@ -8,10 +8,20 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+/**
+ * Implementacja interfejsu StudentManager, zarządzająca studentami w systemie.
+ * Ta klasa umożliwia dodawanie, usuwanie, aktualizowanie oraz wyświetlanie studentów
+ * oraz obliczanie średniej ocen z bazy danych.
+ */
 public class StudentManagerImpl implements StudentManager {
 
     private Connection connection = null;
 
+    /**
+     * Łączy się z bazą danych i tworzy tabelę dla studentów, jeśli jeszcze nie istnieje.
+     *
+     * @param url URL bazy danych, do której należy się połączyć.
+     */
     public void connectToDB(String url) {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS students (" +
                 "name TEXT, " +
@@ -31,6 +41,9 @@ public class StudentManagerImpl implements StudentManager {
         }
     }
 
+    /**
+     * Zamyka połączenie z bazą danych.
+     */
     public void disconnectFromDB() {
         if (connection != null) {
             try {
@@ -45,6 +58,11 @@ public class StudentManagerImpl implements StudentManager {
         }
     }
 
+    /**
+     * Dodaje nowego studenta do bazy danych.
+     *
+     * @param student Obiekt reprezentujący studenta, który ma zostać dodany.
+     */
     @Override
     public void addStudent(Student student) {
         String query = "INSERT INTO students (name, age, grade, studentID) VALUES (?, ?, ?, ?)";
@@ -64,6 +82,11 @@ public class StudentManagerImpl implements StudentManager {
         }
     }
 
+    /**
+     * Usuwa studenta z bazy danych na podstawie jego identyfikatora.
+     *
+     * @param studentID Identyfikator studenta, który ma zostać usunięty.
+     */
     @Override
     public void removeStudent(String studentID) {
         String query = "DELETE FROM students WHERE studentID = (?)";
@@ -76,59 +99,67 @@ public class StudentManagerImpl implements StudentManager {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, studentID);
-            
+
             preparedStatement.executeUpdate();
             System.out.println("Student removed successfully.");
 
         } catch (SQLException e) {
             System.out.println("Error removing student from database: " + e.getMessage());
         }
-
-
     }
 
+    /**
+     * Aktualizuje dane studenta w bazie danych na podstawie jego identyfikatora.
+     *
+     * @param studentID Identyfikator studenta, którego dane mają zostać zaktualizowane.
+     * @param newName Nowe imię studenta.
+     * @param newAge Nowy wiek studenta.
+     * @param newGrade Nowa ocena studenta.
+     */
     @Override
     public void updateStudent(String studentID, String newName, int newAge, double newGrade) {
-    
-    String query = "UPDATE students SET name = ?, age = ?, grade = ? WHERE studentID = ?";
+        String query = "UPDATE students SET name = ?, age = ?, grade = ? WHERE studentID = ?";
 
-    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-        
-        preparedStatement.setString(1, newName);
-        preparedStatement.setInt(2, newAge);
-        preparedStatement.setDouble(3, newGrade);
-        preparedStatement.setString(4, studentID);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-        int rowsAffected = preparedStatement.executeUpdate();
+            preparedStatement.setString(1, newName);
+            preparedStatement.setInt(2, newAge);
+            preparedStatement.setDouble(3, newGrade);
+            preparedStatement.setString(4, studentID);
 
-        if (rowsAffected > 0) {
-            System.out.println("Student with ID " + studentID + " updated successfully.");
-        } else {
-            System.out.println("No student found with ID " + studentID);
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Student with ID " + studentID + " updated successfully.");
+            } else {
+                System.out.println("No student found with ID " + studentID);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error updating student in the database: " + e.getMessage());
         }
-
-    } catch (SQLException e) {
-        System.out.println("Error updating student in the database: " + e.getMessage());
-    }
     }
 
+    /**
+     * Pobiera wszystkich studentów z bazy danych i zwraca ich jako listę.
+     *
+     * @return Lista wszystkich studentów.
+     */
     @Override
     public ArrayList<Student> displayAllStudents() {
         ArrayList<Student> students = new ArrayList<>();
 
-        String query = "SELECT * FROM students"; 
+        String query = "SELECT * FROM students";
 
         try (Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query)) {
+             ResultSet resultSet = statement.executeQuery(query)) {
 
-            
             while (resultSet.next()) {
-                
                 Student student = new Student(
-                    resultSet.getString("name"),
-                    resultSet.getInt("age"),
-                    resultSet.getDouble("grade"),
-                    resultSet.getString("studentID")
+                        resultSet.getString("name"),
+                        resultSet.getInt("age"),
+                        resultSet.getDouble("grade"),
+                        resultSet.getString("studentID")
                 );
 
                 students.add(student);
@@ -141,14 +172,19 @@ public class StudentManagerImpl implements StudentManager {
         return students;
     }
 
+    /**
+     * Oblicza średnią ocen wszystkich studentów w bazie danych.
+     *
+     * @return Średnia ocena wszystkich studentów.
+     */
     @Override
     public double calculateAverageGrade() {
-        String query = "SELECT * FROM students"; 
+        String query = "SELECT * FROM students";
         double gradeSum = 0;
         int studentCount = 0;
 
         try (Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query)) {
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
                 gradeSum += resultSet.getDouble("grade");

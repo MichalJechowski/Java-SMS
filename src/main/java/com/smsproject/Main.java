@@ -8,10 +8,21 @@ import java.awt.event.ActionListener;
 
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Główna klasa aplikacji, która zarządza interfejsem użytkownika oraz operacjami na studentach.
+ * Obejmuje połączenie z bazą danych, dodawanie, usuwanie, aktualizowanie i wyświetlanie danych studentów,
+ * a także obliczanie średniej ocen studentów.
+ */
 public class Main {
+
+    /**
+     * Główna metoda aplikacji, która uruchamia połączenie z bazą danych i GUI.
+     *
+     * @param args Argumenty wejściowe z linii poleceń (nieużywane w tej klasie).
+     */
     public static void main(String[] args) {
 
-        // Implementation
+        // Implementacja
         String url = "jdbc:sqlite:resource:mydatabase.db";
         StudentManagerImpl studentManagerImpl = new StudentManagerImpl();
         studentManagerImpl.connectToDB(url);
@@ -32,7 +43,12 @@ public class Main {
 
     }
 
-    // Panels
+    /**
+     * Tworzy panel GUI, na którym znajdują się pola tekstowe, przyciski oraz tabela studentów.
+     *
+     * @param studentManagerImpl Obiekt zarządzający studentami.
+     * @return Panel GUI.
+     */
     private static JPanel createPanel(StudentManagerImpl studentManagerImpl) {
         JPanel panel = new JPanel();
         panel.setBackground(Color.GRAY);
@@ -44,16 +60,19 @@ public class Main {
         studentIDLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField studentIDField = new JTextField(15);
         studentIDField.setMaximumSize(new Dimension(Integer.MAX_VALUE, studentIDField.getPreferredSize().height));
+
         // nameLabel
         JLabel nameLabel = new JLabel("Name:");
         nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField nameField = new JTextField(15);
         nameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, nameField.getPreferredSize().height));
+
         // ageLabel
         JLabel ageLabel = new JLabel("Age:");
         ageLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField ageField = new JTextField(15);
         ageField.setMaximumSize(new Dimension(Integer.MAX_VALUE, ageField.getPreferredSize().height));
+
         // gradeLabel
         JLabel gradeLabel = new JLabel("Grade:");
         gradeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -235,6 +254,12 @@ public class Main {
         return panel;
     }
 
+    /**
+     * Tworzy panel z tabelą, która wyświetla wszystkich studentów.
+     *
+     * @param studentManagerImpl Obiekt zarządzający studentami.
+     * @return Panel z tabelą.
+     */
     private static JScrollPane createTablePanel(StudentManagerImpl studentManagerImpl) {
 
         ArrayList<Student> students = studentManagerImpl.displayAllStudents();
@@ -252,6 +277,12 @@ public class Main {
         return tablePanel;
     }
 
+    /**
+     * Wyświetla okno dialogowe z wiadomością.
+     *
+     * @param message Wiadomość, która ma zostać wyświetlona w oknie dialogowym.
+     * @return Nowe okno dialogowe z wiadomością.
+     */
     private static JFrame throwDialog(String message) {
         JFrame newFrame = new JFrame("Message");
         newFrame.setSize(300, 200);
