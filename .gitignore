@@ -1,0 +1,28 @@
+# Ignore Maven build directory
+/target/
+
+# Ignore IntelliJ IDEA project files
+.idea/
+
+# Ignore Eclipse project files
+.project
+.classpath
+.settings/
+
+# Ignore VS Code settings folder
+.vscode/
+
+# Ignore all OS-specific files
+.DS_Store          # macOS
+Thumbs.db          # Windows
+
+# Ignore Maven wrapper files (if using)
+.mvn/
+mvnw
+mvnw.cmd
+
+# Ignore log files
+*.log
+
+# Ignore database files (e.g., SQLite, MySQL, etc.)
+*.db
