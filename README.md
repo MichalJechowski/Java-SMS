@@ -1,68 +1,80 @@
-# Java-SMS Project
+# Java-SMS
 
-## Opis projektu
+Projekt Java-SMS to system zarządzania studentami (Student Management System) napisany w języku Java z wykorzystaniem SQLite.
 
-Java-SMS to prosty projekt zarządzania studentami (SMS - Student Management System) napisany w Javie. Projekt wykorzystuje SQLite jako bazę danych, a Maven jako narzędzie do zarządzania zależnościami.
+---
 
-## Wymagania systemowe
+## Wymagania wstępne
 
-- Java 17 lub nowsza (używany OpenJDK 23 w projekcie)
-- Maven 3.6 lub nowszy
-- SQLite JDBC Driver (w projekcie używana wersja `3.42.0.0`)
+1. **Java Development Kit (JDK)** w wersji 17 lub nowszej (np. OpenJDK 23.0.1, jak w projekcie).
+2. **Apache Maven** - do zarządzania zależnościami i budowania projektu. (Dodaj zmienną środowiskową)
+3. **SQLite JDBC Driver** - już zawarty w konfiguracji projektu w pliku `pom.xml`.
 
-## Instrukcja instalacji
+---
 
-1. **Sklonuj repozytorium**:
+## Instalacja
 
-   Skopiuj projekt na swój komputer, używając następującego polecenia w terminalu:
-   ```bash
-   git clone <adres_repozytorium>
-   ```
+1. **Pobierz projekt:**
+   - Jeśli używasz systemu Git:
+     ```bash
+     git clone <URL_REPOZYTORIUM>
+     cd java-SMS
+     ```
+   - Możesz też pobrać pliki projektu ręcznie i otworzyć w swoim IDE.
 
-2. **Wejdź do katalogu projektu**:
-   ```bash
-   cd java-SMS
-   ```
+2. **Konfiguracja IDE:**
+   - Otwórz projekt w IntelliJ IDEA (lub innym IDE obsługującym Maven).
+   - Upewnij się, że JDK jest poprawnie skonfigurowane.
 
-3. **Zbuduj projekt za pomocą Mavena**:
-   ```bash
-   mvn clean install
-   ```
-   Komenda ta zainstaluje wszystkie wymagane zależności i zbuduje projekt.
+3. **Instalacja zależności Maven:**
+   - W katalogu głównym projektu uruchom:
+     ```bash
+     mvn clean install
+     ```
+   - Maven automatycznie pobierze wymagane zależności (SQLite JDBC itp.).
 
-4. **Sprawdź konfigurację bazy danych**:
-   Upewnij się, że plik bazy danych `mydatabase.db` znajduje się w katalogu `src/main/resources`. Możesz także edytować plik, jeśli chcesz używać innej bazy danych SQLite.
+---
 
-## Instrukcja uruchomienia
+## Budowanie i kompilacja
 
-1. **Uruchom klasę główną**:
-   Główna klasa projektu to `Main` znajdująca się w pakiecie `com.smsproject`.
-   Możesz uruchomić ją za pomocą IDE (np. IntelliJ IDEA lub VSCode) lub używając poniższego polecenia Maven:
-   ```bash
-   mvn exec:java -Dexec.mainClass="com.smsproject.Main"
-   ```
+1. **Budowanie projektu:**
+   - Wykorzystaj Maven do stworzenia plików `.jar`:
+     ```bash
+     mvn package
+     ```
+   - Wynik budowania znajdziesz w katalogu `target/`, gdzie wygenerowane zostaną:
+     - `project-sms-1.0-SNAPSHOT.jar`
+     - `project-sms-1.0-SNAPSHOT-jar-with-dependencies.jar` (zalecany, ponieważ zawiera wszystkie zależności).
 
-2. **Interakcja z aplikacją**:
-   Po uruchomieniu programu będziesz mógł zarządzać danymi studentów (np. dodawać, usuwać, czy wyświetlać dane).
+---
+
+## Uruchamianie projektu
+
+1. **Sprawdź plik bazy danych:**
+   - Upewnij się, że baza danych SQLite (`mydatabase.db`) znajduje się w katalogu `src/main/resources`.
+
+2. **Uruchomienie projektu:**
+   - Uruchom aplikację za pomocą pliku `.jar`:
+     ```bash
+     java -jar target/project-sms-1.0-SNAPSHOT-jar-with-dependencies.jar
+     ```
+   - Alternatywnie możesz uruchomić klasę `Main` bezpośrednio w swoim IDE.
+
+---
 
 ## Struktura projektu
 
-- `src/main/java/com/smsproject` - Kod źródłowy projektu
-  - `Main` - Klasa główna aplikacji
-  - `Student` - Klasa reprezentująca obiekt studenta
-  - `StudentManager` - Interfejs do zarządzania studentami
-  - `StudentManagerImpl` - Implementacja zarządzania studentami
-- `src/main/resources/mydatabase.db` - Plik bazy danych SQLite
+- **Kod Java (`src/main/java/com/smsproject`)**:
+  - `Main` - główny punkt startowy programu.
+  - `Student` - klasa reprezentująca dane studenta.
+  - `StudentManager` - interfejs do operacji CRUD na studentach.
+  - `StudentManagerImpl` - implementacja logiki zarządzania studentami.
 
-## Zależności Maven
+- **Zasoby (`src/main/resources`)**:
+  - `mydatabase.db` - plik bazy danych SQLite.
 
-Najważniejsze zależności projektu to:
-```xml
-<dependencies>
-    <dependency>
-        <groupId>org.xerial</groupId>
-        <artifactId>sqlite-jdbc</artifactId>
-        <version>3.42.0.0</version>
-    </dependency>
-</dependencies>
-```
+- **Wyniki budowania (`target/`)**:
+  - Pliki `.jar` gotowe do uruchomienia.
+
+---
+
