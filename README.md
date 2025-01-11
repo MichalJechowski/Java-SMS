@@ -77,5 +77,5 @@ Projekt Java-SMS to system zarządzania studentami (Student Management System) n
     - Pliki `.jar` gotowe do uruchomienia.
 
 ---
-## Dokumentacja Projektu
-- **Dostępna w  \Dokumentacja Projektu\index.html"**
+## Dokumentacja Projektu i Skompilowana Aplikacja
+- **Dostępna w katalogu Dokumentacja Projektu i Aplikacja**
